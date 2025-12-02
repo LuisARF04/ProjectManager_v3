@@ -13,15 +13,20 @@
     </div>
     <div class="mb-3">
         <label for="inputPassword" class="form-label">Contraseña</label>
-        <input type="password" name="password" class="form-control" id="inputPassword" placeholder="Crea una contraseña">
+        <input type="password" name="password" class="form-control" id="inputPassword"
+            placeholder="Crea una contraseña">
     </div>
     <div class="mb-3">
         <label for="inputConfirmPassword" class="form-label">Confirmar contraseña</label>
-        <input type="password" name="confirm" class="form-control" id="inputConfirmPassword" placeholder="Repite tu contraseña">
+        <input type="password" name="confirm" class="form-control" id="inputConfirmPassword"
+            placeholder="Repite tu contraseña">
     </div>
     {% if error %}<p class="text-danger">{{ error }}</p>{% endif %}
-    <button type="submit" class="btn btn-success">Registrarse</button>
-    <p class="mt-3">¿Ya tienes cuenta? <a href="{% url 'login' %}">Inicia sesión</a></p>
+    <div class="d-flex justify-content-center">
+        <button type="submit" class="btn btn-success">Registrarse</button>
+    </div>
+
+    <p class="mt-3 text-center">¿Ya tienes cuenta? <br> <a href="{% url 'login' %}">Inicia Sesión</a></p>
 </form>
 
 {% endblock %}
