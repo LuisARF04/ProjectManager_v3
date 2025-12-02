@@ -6,7 +6,7 @@ body {
     background-color: var(--blue-color) !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
-    padding: 15px;
+    padding: 20px;
 }
 
 .header {
