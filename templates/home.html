@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+<div class="container-fluid d-flex flex-column gap-2">
+    <h3 class="text-center fw-bold">Bienvenido(a) {{ user }} a tu Gestor de Proyectos</h3>
+    
+        <div>
+        <h4 class="mb-4">Lista de Proyectos</h1>
+        <p id="contador" class="text-muted"></p>
+
+        {% if projects %}
+            <ul id="lista-proyectos" class="list-group mb-4">
+                {% for project in projects %}
+                    <li class="list-group-item">
+                        <strong>{{ project.name }}</strong><br>
+                        {{ project.description }}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <div class="alert alert-info">No hay proyectos aún.</div>
+        {% endif %}
+
+        <!-- Botón para agregar nuevo proyecto -->
+        <a href="{% url 'create_project' %}" class="btn btn-primary">
+            Agregar nuevo proyecto
+        </a>
+    </div>
+
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-dark">Cerrar sesión</button>
+    </form>
+</div>
+
+<script src="{% static 'js/counter.js' %}"></script>
+
+{% endblock %}

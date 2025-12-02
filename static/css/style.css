@@ -1,0 +1,49 @@
+:root {
+    --blue-color: #0d6efd;
+}
+
+body {
+    background-color: var(--blue-color) !important;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: white;
+    padding: 40px;
+}
+
+.header {
+    background-color: var(--blue-color) !important;
+}
+
+.header .navbar-brand {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #fff !important;
+}
+
+.header {
+    padding: 15px;
+    min-height: 70px;
+}
+
+.form {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    max-width: 500px;
+    margin: auto;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+    color: #212529;
+}
+
+.form .form-label {
+    font-weight: bold;
+}
+
+.form .form-text {
+    font-size: 0.9em;
+    color: #6c757d;
+}
+
+.btn-primary {
+    width: 100%;
+    font-weight: bold;
+}
