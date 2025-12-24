@@ -1,3 +1,5 @@
+"use strict"
+
 document.addEventListener("DOMContentLoaded", function() {
     const lista = document.getElementById("lista-proyectos");
     const contador = document.getElementById("contador");
@@ -5,5 +7,6 @@ document.addEventListener("DOMContentLoaded", function() {
     if (lista) {
         const cantidad = lista.getElementsByTagName("li").length;
         contador.textContent = "Tienes " + cantidad + " proyecto(s) en tu lista.";
+        contador.style.setProperty('color', 'white', 'important');
     }
 });

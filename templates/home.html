@@ -2,37 +2,73 @@
 {% load static %}
 
 {% block content %}
-<div class="container-fluid d-flex flex-column gap-2">
-    <h3 class="text-center fw-bold">Bienvenid@ {{ user }} a tu Gestor de Proyectos</h3>
-    
-        <div>
-        <h4 class="mb-4">Lista de Proyectos</h1>
-        <p id="contador" class="text-muted"></p>
+<h3 class="text-center fw-bold">Bienvenida, {{ user }}, a tu Gestor de Proyectos</h3>
 
-        {% if projects %}
-            <ul id="lista-proyectos" class="list-group mb-4">
-                {% for project in projects %}
-                    <li class="list-group-item">
-                        <strong>{{ project.name }}</strong><br>
-                        {{ project.description }}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <div class="alert alert-info">No hay proyectos aún.</div>
-        {% endif %}
+<section class="container-fluid d-flex flex-column">
+    <h4 class="mb-4">Tus Proyectos</h1>
+    <p id="contador" class="text-muted"></p>
 
-        <!-- Botón para agregar nuevo proyecto -->
-        <a href="{% url 'create_project' %}" class="btn btn-primary">
-            Agregar nuevo proyecto
-        </a>
-    </div>
+    {% if projects %}
+    <ul id="projects-list" class="list-group mb-4 d-flex flex-column gap-3">
 
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit" class="btn btn-dark">Cerrar sesión</button>
-    </form>
-</div>
+        {% for project in projects %}
+        <li class="list-group-item d-flex justify-content-between align-items-center list-item">
+
+            <div class="w-100" data-bs-toggle="collapse" data-bs-target="#tasks-{{ project.id }}" aria-expanded="false" aria-controls="tasks-{{ project.id }}">
+                <strong>{{ project.name }}</strong><br>
+                <p>{{ project.description }}</p>
+
+                {% if project.due_date %}
+                <small class="{% if project.is_expired or project.is_near_expiration %}text-danger{% else %}text-muted{% endif %}">
+                    <br>Fecha límite: {{ project.due_date|date:"j \\d\\e F \\d\\e Y" }}
+                </small>
+                {% endif %}
+            </div>
+
+            <div class="btn-group gap-2" role="group">
+                <!-- Botón Desplegar -->
+                <button class="btn btn-outline-secondary btn-sm" type="button" data-bs-toggle="collapse" data-bs-target="#tasks-{{ project.id }}" aria-expanded="false" aria-controls="tasks-{{ project.id }}">
+                    <i class="bi bi-chevron-down"></i> Ver tareas
+                </button>
+
+                <!-- Botón Editar -->
+                <a href="{% url 'update_project' project.id %}" class="btn btn-sm btn-primary btn-icon" data-bs-toggle="tooltip" title="Editar proyecto">
+                    <i class="bi bi-pencil"></i>
+                </a>
+                        
+                <!-- Botón Eliminar -->
+                <form method="post" action="{% url 'delete_project' project.id %}"> {% csrf_token %}
+                    <button type="button" class="btn btn-sm btn-danger btn-icon" onclick="showConfirm(this)" data-title="Confirmar eliminación" data-message="¿Seguro que deseas eliminar el proyecto '{{ project.name }}'?" data-bs-toggle="tooltip" title="Eliminar proyecto"> 
+                        <i class="bi bi-trash"></i> 
+                    </button>
+                </form>
+            </div>
+        </li>
+
+        <div class="collapse mt-2" id="tasks-{{ project.id }}">
+            {% include "tasks_list.html" with project=project %}
+        </div>
+        {% endfor %}
+    </ul>
+
+    {% else %}
+    <div class="alert alert-info">No hay proyectos aún.</div>
+    {% endif %}
+
+    <a href="{% url 'create_project' %}" class="btn btn-primary btn-large">
+        <i class="bi bi-plus-circle"></i> Nuevo proyecto
+    </a>
+</section>
+
+<!-- Logout -->
+<form method="post" action="{% url 'logout' %}">
+    {% csrf_token %}
+    <button type="button" class="btn btn-dark mb-4" onclick="showConfirm(this)" 
+    data-title="Confirmar cierre de sesión" 
+    data-message="¿Está seguro de que desea cerrar la sesión activa?">
+        Cerrar sesión
+    </button>
+</form>
 
 <script src="{% static 'js/counter.js' %}"></script>
 

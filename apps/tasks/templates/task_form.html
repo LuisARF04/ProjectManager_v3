@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container d-flex flex-column">
+    <h3>{% if task %}Editar Tarea{% else %}Crear Tarea{% endif %}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+
+        <button type="submit" class="btn btn-primary"> 
+        {% if task %}Actualizar{% else %}Crear{% endif %}
+        </button>
+        
+        <a href="{% url 'tasks_list' project.id %}" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+</div>
+
+{% endblock %}

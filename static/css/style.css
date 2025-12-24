@@ -1,16 +1,24 @@
 :root {
-    --blue-color: #0d6efd;
+    --blue-color: #0a3370;
+}
+
+html, body {
+    height: 100%;
+    margin: 0;
 }
 
 body {
     background-color: var(--blue-color) !important;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     color: white;
-    padding: 15px;
+    min-height: 100vh
+}
+
+main {
+    flex: 1;
 }
 
 .header {
-    background-color: var(--blue-color) !important;
     min-height: 40px;
     justify-content: center;
     align-items: center;
@@ -47,12 +55,30 @@ body {
     color: #6c757d;
 }
 
-.btn-primary {
-    width: 100%;
+.btn {
+    width: 130px;
     font-weight: bold;
 }
 
-.btn-success {
+.btn-large {
     width: 100%;
-    font-weight: bold;
+}
+
+.btn-icon {
+    width: 50px;
+}
+
+.btn-back {
+    width: max-content;
+}
+
+.list-item,
+.list-group-item {
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+.list-item:hover,
+.list-group-item:hover {
+    background-color: #e7f1ff;
 }

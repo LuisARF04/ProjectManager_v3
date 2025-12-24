@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block content %}
+
+<div class="container d-flex flex-column">
+    <h3>{% if project %}Editar Proyecto{% else %}Crear Proyecto{% endif %}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        
+        <button type="submit" class="btn btn-primary"> 
+        {% if project %}Actualizar{% else %}Crear{% endif %}
+        </button>
+
+        <a href="{% url 'home' %}" class="btn btn-secondary">
+            Cancelar
+        </a>
+    </form>
+</div>
+
+{% endblock %}

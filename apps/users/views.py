@@ -14,10 +14,10 @@ def login_view(request):
         
         else:
             error = "Credenciales inválidas"
-            return render(request, 'users/login.html', {'error': error})
+            return render(request, 'login.html', {'error': error})
         
     else:
-        return render(request, 'users/login.html', {'next': request.GET.get('next', '')})
+        return render(request, 'login.html', {'next': request.GET.get('next', '')})
 
 def register_view(request):
     if request.method == 'POST':
@@ -31,9 +31,9 @@ def register_view(request):
             return redirect('login')
         
         else:
-            return render(request, 'users/register.html', {'error': 'Las contraseñas no coinciden'})
+            return render(request, 'register.html', {'error': 'Las contraseñas no coinciden'})
         
-    return render(request, 'users/register.html')
+    return render(request, 'register.html')
 
 def logout_view(request):
     logout(request)

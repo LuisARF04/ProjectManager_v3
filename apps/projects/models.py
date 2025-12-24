@@ -32,6 +32,17 @@ class Project(models.Model):
         verbose_name_plural = "Proyectos"
         ordering = ["-created_at"]
 
+    @property
+    def is_expired(self):
+        return self.due_date and self.due_date < timezone.now().date()
+        
+    @property
+    def is_near_expiration(self):
+        if not self.due_date:
+            return False 
+        
+        return timezone.now().date() <= self.due_date <= (timezone.now().date() + timedelta(days=3))
+
     def __str__(self):
         return self.name
 

@@ -8,5 +8,6 @@ urlpatterns = [
     path("home/", home_view),
     path("users/", include("apps.users.urls")),
     path("projects/", include("apps.projects.urls")),
+    path("tasks/", include("apps.tasks.urls")),
 ]
 
