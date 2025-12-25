@@ -22,7 +22,7 @@ class Task(models.Model):
         auto_now_add=True,
         verbose_name="Fecha de creación"
     )
-    due_date = models.DateField(
+    due_date = models.DateTimeField(
         null=True,
         blank=True,
         verbose_name="Fecha de vencimiento"
@@ -30,6 +30,11 @@ class Task(models.Model):
     completed = models.BooleanField(
         default=False,
         verbose_name="Completada"
+    )
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Fecha completada"
     )
 
     class Meta:
@@ -39,13 +44,11 @@ class Task(models.Model):
 
     @property
     def is_expired(self):
-        return self.due_date and self.due_date < timezone.now().date()
-
+        return self.due_date and self.due_date < timezone.now()
+    
     @property
     def is_near_expiration(self):
         if not self.due_date:
             return False
-        return timezone.now().date() <= self.due_date <= (timezone.now().date() + timedelta(days=2))
-
-    def __str__(self):
-        return f"{self.title} ({self.project.name})"
+        now = timezone.now()
+        return now <= self.due_date <= (now + timedelta(days=2))

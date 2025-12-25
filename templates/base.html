@@ -12,7 +12,7 @@
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 
-<body class="container d-flex justify-content-center flex-column">
+<body class="container-fluid d-flex justify-content-center flex-column">
 
     <!-- Navbar -->
     <nav class="header navbar navbar-expand-lg d-flex justify-content-center">
@@ -20,13 +20,13 @@
     </nav>
 
     <!-- Main content -->
-    <main class="container-fluid d-flex flex-column gap-3" style="max-width: 900px;">
+    <main class="container-fluid" style="max-width: 900px;">
         {% block content %}
         {% endblock %}
     </main>
 
     <!-- Footer -->
-    <footer class="bg-dark text-white text-center py-4 w-100">
+    <footer class="bg-dark text-white text-center py-4 w-100 mt-auto">
         © 2025 ProjectManager - Todos los derechos reservados
     </footer>
 
@@ -51,7 +51,8 @@
 
     <!-- Scripts -->
     <script src="{% static 'js/listRedirect.js' %}"></script>
+    <script src="{% static 'js/counter.js' %}"></script>
     <script src="{% static 'js/tooltips.js' %}"></script>
-    <script src="{% static 'js/dropdownIcon.js' %}"></script>
+    <script src="{% static 'js/toggleDescription.js' %}"></script>
 </body>
 </html>

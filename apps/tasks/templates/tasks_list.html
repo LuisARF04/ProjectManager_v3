@@ -2,20 +2,36 @@
 <div class="collapse mt-2" id="tasks-{{ project.id }}">
     <ol class="list-group ms-3">
         {% for task in project.tasks.all %}
-            <li class="list-group-item d-flex justify-content-between align-items-center mb-3" data-bs-toggle="tooltip" title="Toca la tarea para editarla">
+            <li class="list-group-item d-flex justify-content-between align-items-center mb-3">
 
-                <div class="w-100" onclick=`window.location.href="{% url 'update_task' task.id %}"` style="cursor: pointer;">
+                <div class="w-100">
                     <strong class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
+                        {% if task.reminders.exists %}
+                        <i class="bi bi-exclamation-diamond"></i>
+                        {% endif %}
                         {{ task.title }}
                     </strong><br>
-                    <span class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
-                        {{ task.description }}
+
+                    <span data-bs-toggle="tooltip" title="Toca la descripción para ampliarla" class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
+                        <p id="desc-{{ task.id }}" 
+                            class="truncate-2-lines" 
+                            onclick="toggleDescription('desc-{{ task.id }}')" 
+                            style="cursor: pointer;">
+                            {{ task.description }}
+                        </p>
                     </span>
 
                     {% if task.due_date %}
                         <br>
                         <small class="{% if task.is_expired or task.is_near_expiration %}text-danger{% else %}text-muted{% endif %}">
-                            Fecha límite: {{ task.due_date|date:"j \\d\\e F \\d\\e Y" }}
+                            Fecha límite: {{ task.due_date|date:"j \\d\\e F \\d\\e Y H:i" }}
+                        </small>
+                    {% endif %}
+
+                    {% if task.completed_at %}
+                        <br>
+                        <small class="{% if task.is_expired or task.is_near_expiration %}text-danger{% else %}text-muted{% endif %}">
+                            Completada el: {{ task.completed_at|date:"j \\d\\e F \\d\\e Y H:i" }}
                         </small>
                     {% endif %}
                 </div>

@@ -9,12 +9,18 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
+        
+        <h5>Recordatorios</h5>
+        {{ formset.management_form }}
+        {% for f in formset %}
+            {{ f.as_p }}
+        {% endfor %}
 
         <button type="submit" class="btn btn-primary"> 
         {% if task %}Actualizar{% else %}Crear{% endif %}
         </button>
         
-        <a href="{% url 'tasks_list' project.id %}" class="btn btn-secondary">
+        <a href="{% url 'home' %}" class="btn btn-secondary">
             Cancelar
         </a>
     </form>
