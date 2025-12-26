@@ -63,6 +63,32 @@
     <script src="{% static 'js/counter.js' %}"></script>
     <script src="{% static 'js/tooltips.js' %}"></script>
     <script src="{% static 'js/toggleDescription.js' %}"></script>
+
+    <!-- Pusher JS -->
+    <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+    <script>
+        if (Notification.permission !== "granted") {
+            Notification.requestPermission();
+        }
+
+        var pusher = new Pusher('{{ PUSHER_KEY }}', {
+            cluster: '{{ PUSHER_CLUSTER }}'
+        });
+
+        var channel = pusher.subscribe('user-channel-{{ request.user.id }}');
+
+        channel.bind('reminder-event', function (data) {
+            // Mostrar notificación de sistema
+            if (Notification.permission === "granted") {
+                new Notification("Project Manager", {
+                    body: data.message,
+                    icon: "/static/imgs/turtle-icon.png"
+                });
+            } else {
+                alert(data.message);
+            }
+        });
+    </script>
 </body>
 
 </html>
