@@ -1,0 +1,48 @@
+<div class="container mt-2">
+    <div class="d-flex justify-content-between align-items-center mb-3">
+        <button class="btn btn-outline-primary btn-sm" type="button" data-bs-toggle="collapse"
+            data-bs-target="#filterMenu">
+            <i class="bi bi-filter"></i> Filtros {% if request.GET.urlencode %}(Activos){% endif %}
+        </button>
+    </div>
+
+    <div class="collapse {% if request.GET.urlencode %}show{% endif %} mb-4" id="filterMenu">
+        <div class="card card-body bg-light shadow-sm">
+            <form method="get" class="row g-3">
+
+                <div class="col-md-4">
+                    <label class="form-label text-black small fw-bold">Proyecto</label>
+                    <input type="text" name="project_name" class="form-control form-control-sm"
+                        placeholder="Buscar proyecto..." value="{{ request.GET.project_name|default:'' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label text-black small fw-bold">Título de Tarea</label>
+                    <input type="text" name="task_title" class="form-control form-control-sm"
+                        placeholder="Buscar tarea..." value="{{ request.GET.task_title|default:'' }}">
+                </div>
+
+                <div class="col-md-4">
+                    <label class="form-label text-black small fw-bold">Estado de Tarea</label>
+
+                    <select name="task_status" class="form-select form-select-sm">
+                        <option value="">Todos los estados</option>
+
+                        <option value="completed" {% if request.GET.task_status == 'completed' %}selected{% endif %}>
+                            Completadas
+                        </option>
+
+                        <option value="not_completed" {% if request.GET.task_status == 'not_completed' %}selected{% endif %}>
+                            No completadas
+                        </option>
+                    </select>
+                </div>
+
+                <div class="d-flex gap-2 justify-content-end">
+                    <a href="{% url 'home' %}" class="btn btn-light btn-sm btn-adjust border">Limpiar</a>
+                    <button type="submit" class="btn btn-primary btn-sm btn-adjust">Aplicar Filtros</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

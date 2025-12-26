@@ -3,7 +3,7 @@
 
 {% block content %}
 <section class="container-fluid d-flex flex-column">
-    <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-back mb-4">
+    <a href="{% url 'home' %}" class="btn btn-outline-secondary btn-adjust mb-4">
         <i class="bi bi-arrow-left-circle"></i> Volver a tus proyectos
     </a>
 
@@ -11,6 +11,7 @@
 
     {% if reminders %}
     <ul class="list-group mb-4 d-flex flex-column gap-3">
+
         {% for reminder in reminders %}
         <li class="list-group-item d-flex justify-content-between align-items-center list-item">
 
@@ -33,11 +34,10 @@
             <div class="btn-group gap-2" role="group">
 
                 <!-- Botón Editar -->
-                <a type="button" href="{% url 'update_reminder' reminder.id %}" class="btn btn-sm btn-primary btn-icon" data-bs-toggle="tooltip" title="Editar recordatorio" onclick="openUpdateModal('{% url 'update_reminder' reminder.id %}')">
+                <button type="button" class="btn btn-sm btn-primary btn-icon" data-bs-toggle="modal"
+                    data-bs-target="#updateReminderModal" data-url="{% url 'update_reminder' reminder.id %}">
                     <i class="bi bi-pencil"></i>
-                </a>
-
-                {% include "modal/update_reminder_modal.html" %}
+                </button>
 
                 <!-- Botón Eliminar -->
                 <form method="post" action="{% url 'delete_reminder' reminder.id %}">
@@ -48,6 +48,7 @@
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>
+
             </div>
         </li>
         {% endfor %}
@@ -58,4 +59,7 @@
     {% endif %}
 
 </section>
+
+{% include "modal/update_reminder_modal.html" %}
+
 {% endblock %}

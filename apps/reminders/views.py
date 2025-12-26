@@ -13,6 +13,7 @@ def reminders_list_view(request):
         "reminders": reminders
     })
 
+
 def update_reminder_view(request, reminder_id):
     reminder = get_object_or_404(Reminder, id=reminder_id)
 
@@ -24,6 +25,7 @@ def update_reminder_view(request, reminder_id):
             
             messages.success(request, "Recordatorio actualizado.")
             return redirect("reminders_list")
+
     else:
         form = ReminderForm(instance=reminder)
     

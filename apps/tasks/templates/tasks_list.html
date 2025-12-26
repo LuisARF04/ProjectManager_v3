@@ -29,7 +29,7 @@
 
                     {% if task.completed_at %}
                         <br>
-                        <small class="{% if task.is_expired or task.is_near_expiration %}text-danger{% else %}text-muted{% endif %}">
+                        <small>
                             Completada el: {{ task.completed_at|date:"j \\d\\e F \\d\\e Y H:i" }}
                         </small>
                     {% endif %}

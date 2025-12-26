@@ -4,17 +4,42 @@ from .models import Project
 from .forms import ProjectForm
 from django.contrib.auth.decorators import login_required
 
+
+from django.db.models import Count, Q
+
 @login_required(login_url='login')
 def home_view(request):
     user = request.user
-    projects = Project.objects.filter(user=user)
     
-    return render(request, "projects_list.html", {
-        "user" : user,
-        "projects": projects,
-    })
+    projects = Project.objects.filter(user=user).prefetch_related('tasks')
 
+    project_name = request.GET.get("project_name")
+    if project_name:
+        projects = projects.filter(name__icontains=project_name)
+
+    task_title = request.GET.get("task_title")
+    if task_title:
+        projects = projects.filter(tasks__title__icontains=task_title)
+
+    task_status = request.GET.get("task_status")
+    if task_status in ["completed", "not_completed"]:
+        is_completed = (task_status == "completed")
+        projects = projects.filter(tasks__completed=is_completed)
+
+
+    projects = projects.annotate(
+        pending_tasks_count=Count('tasks', filter=Q(tasks__completed=False))
+    ).order_by(
+        '-pending_tasks_count',
+        '-created_at',
+    )
+
+    return render(request, "projects_list.html", {
+        "projects": projects.distinct(),
+    })
 # Crear proyecto
+
+
 def create_project_view(request):
     if request.method == "POST":
         form = ProjectForm(request.POST)
@@ -23,7 +48,8 @@ def create_project_view(request):
             project = form.save(commit=False)
             project.user = request.user
             project.save()
-            messages.success(request, f"Proyecto '{project.name}' creado exitosamente.")
+            messages.success(
+                request, f"Proyecto '{project.name}' creado exitosamente.")
             return redirect("home")
 
     else:
@@ -41,21 +67,22 @@ def update_project_view(request, project_id):
 
         if form.is_valid():
             form.save()
-            messages.success(request, f"Proyecto '{project.name}' actualizado correctamente.")
+            messages.success(
+                request, f"Proyecto '{project.name}' actualizado correctamente.")
             return redirect("home")
 
     else:
         form = ProjectForm(instance=project)
-        
+
     return render(request, "project_form.html", {"form": form, "project": project})
 
 
 # Eliminar proyecto
 def delete_project_view(request, project_id):
-    project = get_object_or_404(Project, id=project_id) 
-    
-    if request.method == "POST": 
-        project.delete() 
-        messages.success(request, f"Proyecto eliminado correctamente.") 
-        
+    project = get_object_or_404(Project, id=project_id)
+
+    if request.method == "POST":
+        project.delete()
+        messages.success(request, f"Proyecto eliminado correctamente.")
+
     return redirect("home")

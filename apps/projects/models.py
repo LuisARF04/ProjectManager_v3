@@ -1,5 +1,6 @@
 from django.db import models
 from django.contrib.auth.models import User
+from django.utils import timezone
 
 
 class Project(models.Model):
@@ -27,6 +28,15 @@ class Project(models.Model):
         blank=True,
         verbose_name="Fecha de vencimiento"
     )
+    completed = models.BooleanField(
+        default=False,
+        verbose_name="Completado"
+    )
+    completed_at = models.DateTimeField(
+        null=True,
+        blank=True,
+        verbose_name="Fecha completado"
+    )
 
     class Meta:
         verbose_name = "Proyecto"
@@ -46,3 +56,13 @@ class Project(models.Model):
 
     def __str__(self):
         return self.name
+
+    def update_completion_status(self):
+        tasks = self.tasks.all()
+        has_tasks = tasks.exists()
+        all_done = has_tasks and not tasks.filter(completed=False).exists()
+
+        if self.completed != all_done:
+            self.completed = all_done
+            self.completed_at = timezone.now() if all_done else None
+            self.save(update_fields=['completed', 'completed_at'])

@@ -52,3 +52,8 @@ class Task(models.Model):
             return False
         now = timezone.now()
         return now <= self.due_date <= (now + timedelta(days=2))
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if self.project:
+            self.project.update_completion_status()

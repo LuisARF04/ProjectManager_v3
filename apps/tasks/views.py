@@ -56,6 +56,8 @@ def update_task_view(request, task_id):
             form.save()
             formset.save()
 
+            task.project.update_completion_status()
+
             messages.success(request, f"Tarea '{task.title}' actualizada correctamente.")
             return redirect("home")
 
@@ -79,6 +81,8 @@ def complete_task_view(request, task_id):
     task.completed = True
     task.completed_at = timezone.now()
     task.save()
+
+    task.project.update_completion_status()
 
     messages.success(
         request, f"La tarea '{task.title}' fue marcada como completada.")
