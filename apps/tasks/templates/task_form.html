@@ -9,21 +9,70 @@
     <form method="post">
         {% csrf_token %}
         {{ form.as_p }}
-        
-        <h5>Recordatorios</h5>
-        {{ formset.management_form }}
-        {% for f in formset %}
-            {{ f.as_p }}
-        {% endfor %}
 
-        <button type="submit" class="btn btn-primary"> 
-        {% if task %}Actualizar{% else %}Crear{% endif %}
+        <div class="mt-4">
+            <h5>Recordatorios</h5>
+            {{ formset.management_form }}
+
+            <div id="formset-area">
+                {% for f in formset %}
+                {% include "_reminder_form.html" with f=f %}
+                {% endfor %}
+            </div>
+
+            <script type="text/template" id="empty-form-template">
+                {% include "_reminder_form.html" with f=formset.empty_form %}
+            </script>
+
+            <button type="button" id="add-form" class="btn btn-outline-primary btn-large mb-2">
+                <i class="bi bi-plus-circle"></i> Añadir recordatorio
+            </button>
+        </div>
+
+        <button type="submit" class="btn btn-primary">
+            {% if task %}Actualizar{% else %}Crear{% endif %}
         </button>
-        
+
         <a href="{% url 'home' %}" class="btn btn-secondary">
             Cancelar
         </a>
     </form>
 </div>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        const addButton = document.getElementById("add-form");
+        const formsetArea = document.getElementById("formset-area");
+        const totalForms = document.querySelector('input[name$="-TOTAL_FORMS"]');
+        const template = document.getElementById("empty-form-template").innerHTML;
+
+        addButton.addEventListener("click", function () {
+            const currentFormCount = parseInt(totalForms.value);
+            const newFormHtml = template.replace(/__prefix__/g, currentFormCount);
+            formsetArea.insertAdjacentHTML('beforeend', newFormHtml);
+            totalForms.value = currentFormCount + 1;
+        });
+    });
+
+    function removeForm(button) {
+        const formRow = button.closest(".formset-form");
+        if (!formRow) return;
+        const deleteCheckbox = formRow.querySelector('input[name$="-DELETE"]');
+
+        if (deleteCheckbox) {
+            deleteCheckbox.checked = true;
+            formRow.style.display = "none";
+
+        } else {
+            formRow.remove();
+
+            const totalForms = document.querySelector('input[name$="-TOTAL_FORMS"]');
+            if (totalForms) {
+                const currentCount = parseInt(totalForms.value);
+                totalForms.value = currentCount - 1;
+            }
+        }
+    }
+</script>
 
 {% endblock %}

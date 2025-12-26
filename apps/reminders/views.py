@@ -18,17 +18,20 @@ def update_reminder_view(request, reminder_id):
 
     if request.method == "POST":
         form = ReminderForm(request.POST, instance=reminder)
-
+        
         if form.is_valid():
             form.save()
-
+            
             messages.success(request, "Recordatorio actualizado.")
             return redirect("reminders_list")
-
     else:
         form = ReminderForm(instance=reminder)
+    
 
-    return render(request, "reminder_form.html", {"form": form})
+    return render(request, "update_reminder_form.html", {
+        "form": form,
+        "reminder": reminder
+    })
 
 
 def delete_reminder_view(request, reminder_id):

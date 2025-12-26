@@ -9,7 +9,7 @@ def home_view(request):
     user = request.user
     projects = Project.objects.filter(user=user)
     
-    return render(request, "home.html", {
+    return render(request, "projects_list.html", {
         "user" : user,
         "projects": projects,
     })
@@ -23,7 +23,7 @@ def create_project_view(request):
             project = form.save(commit=False)
             project.user = request.user
             project.save()
-            messages.success(request, "Proyecto creado exitosamente.")
+            messages.success(request, f"Proyecto '{project.name}' creado exitosamente.")
             return redirect("home")
 
     else:
@@ -41,7 +41,7 @@ def update_project_view(request, project_id):
 
         if form.is_valid():
             form.save()
-            messages.success(request, "Proyecto actualizado correctamente.")
+            messages.success(request, f"Proyecto '{project.name}' actualizado correctamente.")
             return redirect("home")
 
     else:
@@ -56,6 +56,6 @@ def delete_project_view(request, project_id):
     
     if request.method == "POST": 
         project.delete() 
-        messages.success(request, f"Proyecto '{project.name}' eliminado correctamente.") 
+        messages.success(request, f"Proyecto eliminado correctamente.") 
         
     return redirect("home")

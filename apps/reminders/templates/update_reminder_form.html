@@ -1,0 +1,12 @@
+<form id="updateReminderForm" method="post" action="{% url 'update_reminder' reminder.id %}">
+    {% csrf_token %}
+    
+    <div class="modal-body">
+        {{ form.as_p }}
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+        <button type="submit" class="btn btn-primary">Guardar cambios</button>
+    </div>
+</form>

@@ -7,7 +7,7 @@
                 <div class="w-100">
                     <strong class="{% if task.completed %}text-decoration-line-through text-muted{% endif %}">
                         {% if task.reminders.exists %}
-                        <i class="bi bi-exclamation-diamond"></i>
+                        <i class="bi bi-bell"> </i>
                         {% endif %}
                         {{ task.title }}
                     </strong><br>
@@ -22,7 +22,6 @@
                     </span>
 
                     {% if task.due_date %}
-                        <br>
                         <small class="{% if task.is_expired or task.is_near_expiration %}text-danger{% else %}text-muted{% endif %}">
                             Fecha límite: {{ task.due_date|date:"j \\d\\e F \\d\\e Y H:i" }}
                         </small>

@@ -1,0 +1,52 @@
+<div class="modal fade" id="editReminderModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Editar Fecha y Hora</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div id="modal-body-content">
+                <div class="p-4 text-center"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function openUpdateModal(url) {
+        const modalElement = document.getElementById('editReminderModal');
+        const modalBody = document.getElementById('modal-body-content');
+        const myModal = new bootstrap.Modal(modalElement);
+
+        myModal.show();
+
+        fetch(url, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' }
+        })
+            .then(response => response.text())
+            .then(html => {
+                modalBody.innerHTML = html;
+                setupFormSubmission(modalElement, myModal);
+            });
+    }
+
+    function setupFormSubmission(modalElement, modalInstance) {
+        const form = modalElement.querySelector('form');
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch(form.action, {
+                method: 'POST',
+                body: formData,
+                headers: { 'X-Requested-With': 'XMLHttpRequest' }
+            })
+                .then(response => {
+                    if (response.ok) {
+                        modalInstance.hide();
+                        location.reload(); // Recarga para ver los cambios
+                    }
+                });
+        });
+    }
+</script>

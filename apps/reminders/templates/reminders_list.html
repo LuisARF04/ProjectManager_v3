@@ -33,14 +33,18 @@
             <div class="btn-group gap-2" role="group">
 
                 <!-- Botón Editar -->
-                <a href="{% url 'update_reminder' reminder.id %}" class="btn btn-sm btn-primary btn-icon" data-bs-toggle="tooltip" title="Editar recordatorio">
+                <a type="button" href="{% url 'update_reminder' reminder.id %}" class="btn btn-sm btn-primary btn-icon" data-bs-toggle="tooltip" title="Editar recordatorio" onclick="openUpdateModal('{% url 'update_reminder' reminder.id %}')">
                     <i class="bi bi-pencil"></i>
                 </a>
+
+                {% include "modal/update_reminder_modal.html" %}
 
                 <!-- Botón Eliminar -->
                 <form method="post" action="{% url 'delete_reminder' reminder.id %}">
                     {% csrf_token %}
-                    <button type="button" class="btn btn-sm btn-danger btn-icon" data-bs-toggle="tooltip" title="Eliminar recordatorio" onclick="showConfirm(this)" data-title="Confirmar eliminación" data-message="¿Está seguro de que deseas eliminar este recordatorio?">
+                    <button type="button" class="btn btn-sm btn-danger btn-icon" data-bs-toggle="tooltip"
+                        title="Eliminar recordatorio" onclick="showConfirm(this)" data-title="Confirmar eliminación"
+                        data-message="¿Está seguro de que deseas eliminar este recordatorio?">
                         <i class="bi bi-trash"></i>
                     </button>
                 </form>

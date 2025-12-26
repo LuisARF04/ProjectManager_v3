@@ -9,7 +9,7 @@ from apps.reminders.models import Reminder
 from apps.reminders.forms import ReminderForm
 
 ReminderFormSet = inlineformset_factory(
-    Task, Reminder, form=ReminderForm, extra=1, can_delete=False
+    Task, Reminder, form=ReminderForm, extra=0, can_delete=False
 )
 
 # Crear tarea
@@ -30,7 +30,7 @@ def create_task_view(request, project_id):
             formset.instance = task
             formset.save()
 
-            messages.success(request, "Tarea creada exitosamente con recordatorio opcional.")
+            messages.success(request, f"Tarea '{task.title}' creada exitosamente.")
             return redirect("home")
 
     else:
@@ -56,7 +56,7 @@ def update_task_view(request, task_id):
             form.save()
             formset.save()
 
-            messages.success(request, "Tarea actualizada correctamente con recordatorio.")
+            messages.success(request, f"Tarea '{task.title}' actualizada correctamente.")
             return redirect("home")
 
     else:
