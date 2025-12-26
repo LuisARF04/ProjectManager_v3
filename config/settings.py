@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 DEBUG = True
 
 if 'PYTHONANYWHERE_DOMAIN' in os.environ:
-    ALLOWED_HOSTS = ['diagonalley3.pythonanywhere.com']
+    ALLOWED_HOSTS = ['MyProjectManagerUHo.pythonanywhere.com']
 else:
     ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
