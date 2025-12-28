@@ -1,9 +1,16 @@
 from django.db import models
 from django.utils import timezone
 from datetime import timedelta
-from apps.projects.models import Project  # ajusta el import según tu estructura
+from apps.projects.models import Project
+from django.contrib.auth.models import User
 
 class Task(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name="tasks",
+        verbose_name="Usuario"
+    )
     project = models.ForeignKey(
         Project,
         on_delete=models.CASCADE,

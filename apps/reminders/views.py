@@ -7,8 +7,8 @@ from .forms import ReminderForm
 
 def reminders_list_view(request):
     reminders = Reminder.objects.select_related("task").filter(
-        task__completed=False, 
-        user=request.user
+        task__completed=False,
+        task__user=request.user
     ).order_by("reminder_at")
 
     return render(request, "reminders_list.html", {
