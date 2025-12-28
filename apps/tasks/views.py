@@ -24,8 +24,8 @@ def create_task_view(request, project_id):
 
         if form.is_valid() and formset.is_valid():
             task = form.save(commit=False)
-            task.project = project
             task.user = request.user
+            task.project = project
             task.save()
 
             formset.instance = task
