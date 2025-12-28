@@ -7,7 +7,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
 
-            <div id="modal-body-content" id="updateReminderModalBody">
+            <div id="updateReminderModalBody">
                 <!-- update_reminder_form.html -->
             </div>
         </div>
@@ -21,15 +21,20 @@
         reminderModal.addEventListener('show.bs.modal', function (event) {
             var button = event.relatedTarget;
             var url = button.getAttribute('data-url');
+            var modalBody = document.getElementById("updateReminderModalBody");
 
+            modalBody.innerHTML = '<div class="p-3 text-center">Cargando...</div>';
             fetch(url)
                 .then(response => {
-                    console.log(response)
-                    response.text()
-                    console.log(response + " hecha texto")
+                    if (!response.ok) throw new Error('Error en la red');
+                    return response.text();
                 })
                 .then(html => {
-                    document.getElementById("updateReminderModalBody").innerHTML = html;
+                    modalBody.innerHTML = html;
+                })
+                .catch(error => {
+                    modalBody.innerHTML = '<div class="alert alert-danger">Error al cargar el formulario.</div>';
+                    console.error('Error:', error);
                 });
         });
     });

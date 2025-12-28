@@ -52,6 +52,8 @@
             </div>
         </li>
         {% endfor %}
+
+        {% include "modal/update_reminder_modal.html" %}
     </ul>
 
     {% else %}
@@ -59,7 +61,5 @@
     {% endif %}
 
 </section>
-
-{% include "modal/update_reminder_modal.html" %}
 
 {% endblock %}

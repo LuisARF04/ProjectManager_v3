@@ -4,6 +4,7 @@ from django.utils import timezone
 from .models import Reminder
 from .forms import ReminderForm
 
+
 def reminders_list_view(request):
     reminders = Reminder.objects.select_related("task").filter(
         task__completed=False
@@ -19,16 +20,15 @@ def update_reminder_view(request, reminder_id):
 
     if request.method == "POST":
         form = ReminderForm(request.POST, instance=reminder)
-        
+
         if form.is_valid():
             form.save()
-            
+
             messages.success(request, "Recordatorio actualizado.")
             return redirect("reminders_list")
 
     else:
         form = ReminderForm(instance=reminder)
-    
 
     return render(request, "update_reminder_form.html", {
         "form": form,
